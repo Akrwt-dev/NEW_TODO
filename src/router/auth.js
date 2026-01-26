@@ -1,18 +1,21 @@
 const express = require("express");
 const authRouter = express.Router();
+const bcrypt = require("bcrypt")
 const User = require("../modules/user");
+const validatSigupdata = require("../utils/validation");
 
 authRouter.post("/signup", async (req, res) => {
   try {
-    console.log(req.body);
 
+    validatSigupdata(req);
     const { firstName, lastName, emailId, password } = req.body;
+    const hashPassword = await bcrypt.hash(password,10)
 
     const user = new User({
       firstName,
       lastName,
       emailId,
-      password,
+      password : hashPassword,
     });
 
     const savedUser = await user.save();
@@ -22,5 +25,26 @@ authRouter.post("/signup", async (req, res) => {
     res.status(500).json({ message: "Error saving user" });
   }
 });
+
+
+
+
+authRouter.post("/login",async(req,res)=>{
+  try{
+    const {emailId,password}=req.body;
+    const user = await User.findOne({emailId :emailId})
+    if(!isEmailValid){
+      throw new Error ("User not found");
+    }
+    const ispassword =  await user.validatePassword(password);
+    if(!ispassword){
+      throw new error("Invalid Details")
+    }
+    res.send(user)
+  }catch(err){
+    console.error(err);
+    res.status(500).json({ message: "Error saving user" });
+  }
+})
 
 module.exports = authRouter;
