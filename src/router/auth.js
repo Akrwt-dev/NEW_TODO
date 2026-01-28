@@ -17,8 +17,9 @@ authRouter.post("/signup", async (req, res) => {
       emailId,
       password : hashPassword,
     });
-
     const savedUser = await user.save();
+    const token = await user.getJwtToken();
+    res.cookie("token",token,{httpOnly:true})
     res.json({ message: "data added to database", data: savedUser });
   } catch (err) {
     console.error(err);
@@ -40,6 +41,8 @@ authRouter.post("/login",async(req,res)=>{
     if(!ispassword){
       throw new error("Invalid Details")
     }
+    const token = user.getJwtToken();
+    res.cookie("token",token, {  expires: new Date(Date.now() + 8 * 3600000), })
     res.send(user)
   }catch(err){
     console.error(err);
