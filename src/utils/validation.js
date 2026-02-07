@@ -1,4 +1,4 @@
-const validate = require("validator")
+const validator = require("validator");
 
 const validatSigupdata=(req)=>{
     const { firstName, lastName, emailId, password} = req.body;

@@ -38,13 +38,16 @@ const userSchema = new mongoose.Schema(
 );
 
 
-userSchema.method.getJwtToken = async function () {
-  const user = this;
-  const token = jwt.sign({ _id: 'user._id' }, 'TODOAPP');
-  return token;
-}
+userSchema.methods.getJwtToken = function () {
+  return jwt.sign(
+    { _id: this._id },
+    "TODOAPP",
+    { expiresIn: "7d" }
+  );
+};
 
-userSchema.method.validatePassword = async function(passwordEnteredByTheUser){
+
+userSchema.methods.validatePassword = async function(passwordEnteredByTheUser){
   const user = this;
   const passwordHash = user.password;
   const ispasswordCorrect = await bcrypt.compare(passwordEnteredByTheUser,passwordHash)

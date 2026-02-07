@@ -8,6 +8,7 @@ authRouter.post("/signup", async (req, res) => {
   try {
 
     validatSigupdata(req);
+    console.log(req.body);
     const { firstName, lastName, emailId, password } = req.body;
     const hashPassword = await bcrypt.hash(password,10)
 
@@ -27,19 +28,22 @@ authRouter.post("/signup", async (req, res) => {
   }
 });
 
-
-
+authRouter.post("/logout", async (req, res) => {
+  res.cookie("token", null, { expires: new Date(Date.now()) });
+  res.send("You have successfully log_out");
+});
+  
 
 authRouter.post("/login",async(req,res)=>{
   try{
     const {emailId,password}=req.body;
     const user = await User.findOne({emailId :emailId})
-    if(!isEmailValid){
+    if(!user){
       throw new Error ("User not found");
     }
     const ispassword =  await user.validatePassword(password);
     if(!ispassword){
-      throw new error("Invalid Details")
+      throw new Error("Invalid Details")
     }
     const token = user.getJwtToken();
     res.cookie("token",token, {  expires: new Date(Date.now() + 8 * 3600000), })

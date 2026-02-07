@@ -9,7 +9,7 @@ const userAuth = async(req,res,next)=>{
     }
     const decodeData = jwt.verify(token,"TODOAPP")
     const user = await User.findById(decodeData._id);
-    if(!loginuser){
+    if(!user){
          return res.status(404).send("User Not Found!");
     }
     req.user=user;
@@ -19,4 +19,4 @@ const userAuth = async(req,res,next)=>{
     }
 }
 
-module.exports = {userAuth};
+module.exports = userAuth;
