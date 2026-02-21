@@ -5,7 +5,7 @@ const userAuth = async(req,res,next)=>{
     try{
         const {token} = req.cookies;
     if(!token){
-        return res.status(404).send("Token not found")
+        return res.status(401).send("Token not found")
     }
     const decodeData = jwt.verify(token,"TODOAPP")
     const user = await User.findById(decodeData._id);

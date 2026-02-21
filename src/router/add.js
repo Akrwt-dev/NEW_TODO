@@ -1,10 +1,13 @@
 const express = require("express");
 const addRouter = express.Router();
 const Task = require("../modules/task");
+const User = require("../modules/user")
 const userAuth = require("../middlewares/auth");
+const { validateEnteredTask } = require("../utils/validation");
 
 addRouter.post("/add", userAuth, async (req, res) => {
   try {
+    validateEnteredTask(req.body);
     const { title, description, dueDate, priority } = req.body;
     const task = new Task({
       title,
@@ -19,7 +22,7 @@ addRouter.post("/add", userAuth, async (req, res) => {
       data: taskSave,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       message: error.message,
     });
   }
@@ -91,5 +94,18 @@ addRouter.get("/task", userAuth, async (req, res) => {
     });
   }
 });
+
+addRouter.get("/profile", userAuth, async (req, res) => {
+  try {
+    res.json(req.user);
+  } catch (err) {
+    res.status(400).send("Something went wrong: " + err.message);
+  }
+});
+
+
+addRouter.get("/health",(req,res)=>{
+  res.send("all ok")
+})
 
 module.exports = addRouter;
