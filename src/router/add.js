@@ -8,12 +8,13 @@ const { validateEnteredTask } = require("../utils/validation");
 addRouter.post("/add", userAuth, async (req, res) => {
   try {
     validateEnteredTask(req.body);
-    const { title, description, dueDate, priority } = req.body;
+    const { title, description, dueDate, priority,photoURL } = req.body;
     const task = new Task({
       title,
       description,
       dueDate,
       priority,
+      photoURL,
       userId: req.user._id,
     });
     const taskSave = await task.save();

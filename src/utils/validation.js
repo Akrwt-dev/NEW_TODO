@@ -18,11 +18,11 @@ const validatSigupdata = (req) => {
 const validateEnteredTask = (body) => {
   const { title, description, dueDate } = body;
 
-  if (!title || title.trim().length <= 2) {
+  if (!title || title.trim().length <= 2 || title.trim().length >= 50) {
     throw new Error("Please Enter the proper title");
   }
 
-  if (!description || description.trim().length <= 5) {
+  if (!description || description.trim().length <= 5 || description.trim().length >= 100) {
     throw new Error("Please Enter the proper description");
   }
 
