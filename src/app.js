@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 connectDB()
   .then(() => {
     console.log("DB Connected");
-    app.listen(4000, () => {
+    app.listen(process.env.PORT, () => {
       console.log("server connected successfully");
     });
   })
