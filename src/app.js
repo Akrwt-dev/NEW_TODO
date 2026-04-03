@@ -10,8 +10,11 @@ app.use(
   cors({
     origin: "https://new-todo-pi.vercel.app",
     credentials: true,
-  }),
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
 );
+app.options("*", cors());
 
 app.use(express.json());
 app.use(cookieParser());
