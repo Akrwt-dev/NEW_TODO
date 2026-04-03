@@ -3,7 +3,7 @@ const addRouter = express.Router();
 const Task = require("../modules/task");
 const User = require("../modules/user")
 const userAuth = require("../middlewares/auth");
-const { validateEnteredTask } = require("../utils/validation");
+const { validateEnteredTask, updateData } = require("../utils/validation");
 
 addRouter.post("/add", userAuth, async (req, res) => {
   try {
@@ -108,5 +108,26 @@ addRouter.get("/profile", userAuth, async (req, res) => {
 addRouter.get("/health",(req,res)=>{
   res.send("all ok")
 })
+
+
+addRouter.patch("/profile/edit", userAuth , async(req,res)=>{
+  try {
+    if (!updateData(req)) throw new Error("Cannot update this");
+
+    const loginUser = req.user;
+    Object.keys(req.body).forEach((key) => {
+      loginUser[key] = req.body[key];
+    });
+
+    await loginUser.save();
+
+    res.json({
+      message: "Data updated successfully",
+      data: loginUser,
+    });
+  } catch (err) {
+    res.status(400).send("Something went wrong: " + err.message);
+  }
+});
 
 module.exports = addRouter;

@@ -1,5 +1,27 @@
 const validator = require("validator");
 
+const updateData = (req) => {
+  try {
+    const validUpdates = [
+      "firstName",
+      "lastName",
+      "emailId",
+      "gender",
+      "age",
+      "photoURL",
+    ];
+
+    const isEditAllowed = Object.keys(req.body).every(e => validUpdates.includes(e));
+
+    return isEditAllowed;
+  } catch {
+    throw new Error("You cannot update this");
+  }
+};
+
+
+
+
 const validatSigupdata = (req) => {
   const { firstName, lastName, emailId, password } = req.body;
   if (firstName.length == 0 || lastName.length == 0) {
@@ -44,4 +66,5 @@ const validateEnteredTask = (body) => {
 module.exports = {
   validatSigupdata,
   validateEnteredTask,
+  updateData,
 };

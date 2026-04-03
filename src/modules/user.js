@@ -48,6 +48,7 @@ userSchema.methods.getJwtToken = function () {
 };
 
 
+
 userSchema.methods.validatePassword = async function(passwordEnteredByTheUser){
   const user = this;
   const passwordHash = user.password;

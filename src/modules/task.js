@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const todologo = require("../assets/to-do-list.png")
 const taskSchema = new mongoose.Schema(
   {
     title: {
