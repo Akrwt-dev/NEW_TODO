@@ -7,7 +7,7 @@ const app = express();
 const authRouter = require("./router/auth.js");
 const addRouter = require("./router/add.js")
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.ORIGIN,
   credentials: true
 }));
 
