@@ -7,7 +7,7 @@ const app = express();
 const authRouter = require("./router/auth.js");
 const addRouter = require("./router/add.js")
 app.use(cors({
-  origin: process.env.ORIGIN,
+  origin: process.env.FRONTEND_URL,
   credentials: true
 }));
 
